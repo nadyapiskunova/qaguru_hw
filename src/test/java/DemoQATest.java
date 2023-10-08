@@ -7,14 +7,15 @@ public class DemoQATest extends TestBase {
     void formTest() {
 
         demoQAPage.openPage()
+                .closeBanners()
                 .setFirstName("Nadya")
                 .setLastName("Piskunova")
                 .setUserEmail("test@test.ru")
-                .setGenderSelect()
+                .setGenderSelect("Female")
                 .setUserNumberInput("8111222334")
                 .setDateOfBirth("02","May", "1999")
                 .setSubjectsInput("English")
-                .setUsersHobbies()
+                .setUsersHobbies("Music")
                 .setImage("kot.jpg")
                 .setUserAddress("ru")
                 .stateSelect("NCR")
@@ -22,35 +23,40 @@ public class DemoQATest extends TestBase {
                 .setSubmitClick();
 
 
-        demoQAPage.checkResults("Student Name","Nadya Piskunova")
-                .checkResults("Student Email","test@test.ru")
-                .checkResults("Gender","Female")
-                .checkResults("Mobile","8111222334")
-                .checkResults("Date of Birth","02 May,1999")
-                .checkResults("Subjects","English")
-                .checkResults("Hobbies","Music")
-                .checkResults("Picture","kot.jpg")
-                .checkResults("Address","ru")
-                .checkResults("State and City","NCR Delhi");
+
+        demoQAPage.setModalWindow()
+                .setResultsTest("Student Name","Nadya Piskunova")
+                .setResultsTest("Student Email","test@test.ru")
+                .setResultsTest("Gender","Female")
+                .setResultsTest("Mobile","8111222334")
+                .setResultsTest("Date of Birth","02 May,1999")
+                .setResultsTest("Subjects","English")
+                .setResultsTest("Hobbies","Music")
+                .setResultsTest("Picture","kot.jpg")
+                .setResultsTest("Address","ru")
+                .setResultsTest("State and City","NCR Delhi");
 
 
     }
 
     @Test
-    void emptyNameUser (){
+    void emptyFullNameUser (){
         demoQAPage.openPage()
+                .closeBanners()
                 .setFirstName("")
                 .setLastName("")
                 .setUserEmail("test@test.ru")
-                .setGenderSelect()
+                .setGenderSelect("Female")
                 .setUserNumberInput("8111222334")
                 .setDateOfBirth("02","May", "1999")
                 .setSubjectsInput("English")
-                .setUsersHobbies()
+                .setUsersHobbies("Music")
                 .setImage("kot.jpg")
                 .setUserAddress("ru")
                 .stateSelect("NCR")
                 .citySelect("Delhi")
                 .setSubmitClick();
+
+        demoQAPage.checkEmptyFullNameUser();
     }
 }

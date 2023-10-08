@@ -2,6 +2,8 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
+import pages.components.CheckResultsComponent;
+
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
@@ -12,14 +14,13 @@ import static com.codeborne.selenide.Selenide.executeJavaScript;
 public class DemoQAPage {
     //// selenide elements
     CalendarComponent calendar = new CalendarComponent();
+    CheckResultsComponent checkResult = new CheckResultsComponent();
     SelenideElement titleLabel =   $(".practice-form-wrapper"),
             firstNameInput = $("#firstName"),
             lastNameInput = $("#lastName"),
             userEmailInput = $("#userEmail"),
-            genderSelect = $("[for=gender-radio-2]"),
             userNumberInput = $("#userNumber"),
             subjectInput = $("#subjectsInput"),
-            userHobbies = $("[for=hobbies-checkbox-3]"),
             downloadImage = $("#uploadPicture"),
             userAddress = $("#currentAddress"),
             submitClick =  $("#submit");
@@ -27,10 +28,15 @@ public class DemoQAPage {
     public DemoQAPage openPage() {
         open("/automation-practice-form");
         titleLabel.shouldHave(text("Student Registration Form"));
+
+        return this;
+    }
+    public DemoQAPage closeBanners(){
         executeJavaScript("$('#fixedban').remove()");
         executeJavaScript("$('footer').remove()");
 
         return this;
+
     }
 
     public DemoQAPage setFirstName(String value) {
@@ -51,8 +57,8 @@ public class DemoQAPage {
         return this;
     }
 
-    public DemoQAPage setGenderSelect(){
-        genderSelect.click();
+    public DemoQAPage setGenderSelect(String gender){
+        $("#genterWrapper").$(byText(gender)).click();
 
         return this;
     }
@@ -65,7 +71,7 @@ public class DemoQAPage {
 
     public DemoQAPage setDateOfBirth(String day, String month, String year) {
         $("#dateOfBirthInput").click();
-        calendar.setDate("02","May", "1999");
+        calendar.setDate(day, month, year);
 
         return this;
     }
@@ -76,8 +82,8 @@ public class DemoQAPage {
         return this;
     }
 
-    public DemoQAPage setUsersHobbies(){
-        userHobbies.click();
+    public DemoQAPage setUsersHobbies(String hobby){
+        $("#hobbiesWrapper").$(byText(hobby)).click();
 
         return this;
     }
@@ -96,14 +102,14 @@ public class DemoQAPage {
 
     public DemoQAPage stateSelect(String state){
         $("#state").click();
-        $("#stateCity-wrapper").$(byText("NCR")).click();
+        $("#stateCity-wrapper").$(byText(state)).click();
 
         return this;
     }
 
     public DemoQAPage citySelect(String city){
         $("#city").click();
-        $("#stateCity-wrapper").$(byText("Delhi")).click();
+        $("#stateCity-wrapper").$(byText(city)).click();
 
         return this;
     }
@@ -114,11 +120,19 @@ public class DemoQAPage {
         return this;
     }
 
-    public DemoQAPage checkResults(String key,String value){
-        $(".modal-dialog").should(appear);
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").$(byText(key)).parent().shouldHave(text(value));
+    public DemoQAPage setModalWindow(){
+        checkResult.openModalWindow();
+        return this;
+    }
 
+    public DemoQAPage setResultsTest(String key,String value){
+        checkResult.setCheckResult(key,value);
+
+        return this;
+    }
+
+    public DemoQAPage checkEmptyFullNameUser(){
+        checkResult.emptyName();
 
         return this;
     }
